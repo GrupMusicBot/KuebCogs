@@ -1,0 +1,8 @@
+{
+  "author": ["KuebV"],
+  "description" : "A Leveling Command that uses Embeds to Track Levels",
+  "install_msg": "Thanks for installing 'Leveling', I recommend you review the Github Wiki to setup the Database",
+  "short": "Leveling Command",
+  "tags": ["leveler"],
+  "requirements": ["pymongo>=3.10"]
+}
