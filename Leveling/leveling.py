@@ -69,7 +69,7 @@ class Level(commands.Cog):
     @commands.command(name="rank")
     @commands.cooldown(1, 15, commands.BucketType.user)
     async def rank(self, ctx : commands.Context, User : discord.Member = None):
-        mongo_url = "mongodb+srv://DiscordRed:bigbob03@discord.wykzn.mongodb.net/discord?retryWrites=true&w=majority"
+        mongo_url = "MongoURLHere"
         cluster = MongoClient(mongo_url)
         db = cluster["TheLounge"]
         DBCollection = db["Levels"]
@@ -121,7 +121,7 @@ class Level(commands.Cog):
 
     @commands.Cog.listener("on_message_without_command")
     async def on_message(self, message: discord.Message):
-        mongo_url = "mongodb+srv://DiscordRed:bigbob03@discord.wykzn.mongodb.net/discord?retryWrites=true&w=majority"
+        mongo_url = "MongoURL"
         cluster = MongoClient(mongo_url)
         db = cluster["TheLounge"]
         DBCollection = db["Levels"]
