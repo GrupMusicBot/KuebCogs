@@ -86,6 +86,7 @@ class Level(commands.Cog):
             embed = discord.Embed(title=f"{User.display_name}'s Level", color=discord.Color.gold())
             embed.add_field(name="Current Level", value=f"**{Rank}**")
             requiredXP = await self._requiredXP(Rank)
+            # This is only for the experience bar at the bottom on the embed
             getNum = (XP / requiredXP) * 100
             getNearstNum = (round(getNum / 10) * 10) / 10
             Bars = "▋"
@@ -97,8 +98,10 @@ class Level(commands.Cog):
                 RemainingBars = RemainingBars + "#"
             embed.add_field(name="XP %", value=f"[{Bars}{RemainingBars}] {round(getNum, 2)} % to the next level", inline=False)
             await ctx.send(embed=embed)
+            # This actually works really well, and it looks good.
 
         except pymongo.errors.PyMongoError:
+            # Literally if anything with PyMongo throws an error
             Result = DBCollection.find({"_id": User.id})
             for results in Result:
                 Rank = (results['Rank'])
@@ -118,6 +121,10 @@ class Level(commands.Cog):
                 RemainingBars = RemainingBars + "▁"
             embed.add_field(name="XP %", value=f"[{Bars}{RemainingBars}] {round(getNum, 2)} % to the next level", inline=False)
             await ctx.send(embed=embed)
+            
+        # Need to add an
+        # except Exception as e:
+        # here
 
     @commands.Cog.listener("on_message_without_command")
     async def on_message(self, message: discord.Message):
@@ -132,6 +139,7 @@ class Level(commands.Cog):
         if author.bot:
             return
         curr_time = time.time()
+        # Compare the current time to the last message time
 
         MinXP = await self.config.guild(message.guild).Min_XP()
         MaxXP = await self.config.guild(message.guild).Max_XP()
@@ -146,10 +154,9 @@ class Level(commands.Cog):
                 CurrentXP = (result["XP"])
                 PrevMessage = (result["LastMessage"])
                 LastTime = (result["LastTime"])
-
-            if curr_time - LastTime >= 60:
-                pass
-            else:
+               
+            # If 60 seconds hasn't past since the last message. Return
+            if not curr_time - LastTime >= 60:
                 return
 
             if message.content == PrevMessage:
@@ -167,11 +174,5 @@ class Level(commands.Cog):
             UpdateXP = DBCollection.update_one({"_id" : author.id}, {"$inc" : {"XP" : XPGive}})
             UpdateMessage = DBCollection.update_one({"_id" : author.id}, {"$set" : {"LastMessage" : message.content}})
             return
-
-
-
-
-
-
 
 
